@@ -36,8 +36,7 @@ namespace ChatApp
             STW = new StreamWriter(client.GetStream());
             STW.AutoFlush = true;
             backgroundWorker1.RunWorkerAsync();
-            backgroundWorker2.RunWorkerAsync();
-
+            MessageBox.Show("Started server successfully");
         }
 
         private void Connectbutton_Click(object sender, EventArgs e)
@@ -47,9 +46,11 @@ namespace ChatApp
             client.Connect(IPEnd);
             try
             {
-                ChatScreentextbox.AppendText("Connect to Server" + "\n");
+                ChatScreentextbox.AppendText("Connected to Server" + "\r\n");
+                MessageBox.Show("Connected successfully");
                 STW = new StreamWriter(client.GetStream());
                 STR = new StreamReader(client.GetStream());
+                STW.AutoFlush = true;
                 backgroundWorker1.RunWorkerAsync();
                 backgroundWorker2.WorkerSupportsCancellation = true; 
             }
@@ -68,7 +69,7 @@ namespace ChatApp
                     receive = STR.ReadLine();
                     this.ChatScreentextbox.Invoke(new MethodInvoker(delegate ()
                     {
-                        ChatScreentextbox.AppendText("You: " + receive + "\n");
+                        ChatScreentextbox.AppendText("You: " + receive + "\r\n");
                     }));
                     receive = "";
                 }
@@ -86,7 +87,7 @@ namespace ChatApp
                 STW.WriteLine(TextToSend);
                 this.ChatScreentextbox.Invoke(new MethodInvoker(delegate ()
                 {
-                    ChatScreentextbox.AppendText("Me: " + TextToSend + "\n");
+                    ChatScreentextbox.AppendText("Me: " + TextToSend + "\r\n");
                 }));
             }
             else
@@ -99,11 +100,11 @@ namespace ChatApp
 
         private void Sendbutton_Click(object sender, EventArgs e)
         {
-            if (Messagetextbox.Text != "")
+            if (Messagetextbox.Text!="")
             {
                 TextToSend = Messagetextbox.Text;
                 backgroundWorker2.RunWorkerAsync();
-            }
+            } 
             Messagetextbox.Text = "";
         }
     }
